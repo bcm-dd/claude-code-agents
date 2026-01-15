@@ -48,9 +48,35 @@ Set up GitHub and Slack MCP servers for my project
 | Component | Location | Purpose |
 |-----------|----------|---------|
 | Agents | `CLAUDE.md` | Project instructions and behaviors |
+| Skills | `CLAUDE.md` or `.claude/skills/` | Domain knowledge and patterns |
 | Commands | `.claude/commands/` | Custom slash commands |
 | Hooks | `.claude/settings.json` | Automation on tool use |
 | MCP Servers | `.claude/settings.json` | External integrations |
+
+## Search & Discovery
+
+### Search by Keyword
+
+```
+Search for Kubernetes agents in the marketplace
+```
+
+Behind the scenes, this uses:
+- `Grep` to search agent/skill descriptions
+- `Glob` to find matching files
+- `Read` to explore contents
+
+### Browse by Category
+
+```
+Show me all security-related plugins
+```
+
+### Explore a Plugin
+
+```
+What agents and skills are in the python-development plugin?
+```
 
 ## Available Marketplace (66 Plugins)
 
@@ -104,7 +130,41 @@ You are an expert backend architect...
 [Full agent instructions]
 ```
 
-### Method 2: Install Custom Command
+### Method 2: Install a Skill
+
+Skills provide domain knowledge. Three installation options:
+
+**Option A: Key sections to CLAUDE.md (recommended)**
+```
+Install the async-python-patterns skill to my project
+```
+
+Result in `CLAUDE.md`:
+```markdown
+## Async Python Patterns
+
+When writing async Python code, follow these patterns:
+
+### Core Patterns
+- Use `async def` for I/O-bound operations
+- Prefer `asyncio.gather()` for concurrent tasks
+[...]
+```
+
+**Option B: Full skill copy**
+```
+Copy the kubernetes skills to .claude/skills/
+```
+
+Result: `.claude/skills/k8s-manifest-generator/SKILL.md`
+
+**Option C: Reference only**
+```markdown
+## Skills Reference
+For Kubernetes patterns, see: plugins/kubernetes-operations/skills/
+```
+
+### Method 3: Install Custom Command
 
 Commands become available as `/command-name`:
 
@@ -114,7 +174,7 @@ Install the /tdd-cycle command from tdd-workflows
 
 Result in `.claude/commands/tdd-cycle.md`
 
-### Method 3: Configure Hooks
+### Method 4: Configure Hooks
 
 Hooks run automatically on tool use:
 
@@ -137,7 +197,7 @@ Result in `.claude/settings.json`:
 }
 ```
 
-### Method 4: Configure MCP Servers
+### Method 5: Configure MCP Servers
 
 MCP servers connect Claude Code to external services:
 

@@ -19,11 +19,18 @@ Deep expertise in Claude Code local setup, the plugin marketplace, prompt engine
 
 ### Local Installation (Primary)
 - Install agents from marketplace to CLAUDE.md
+- Install skills (full copy to .claude/skills/ or key sections to CLAUDE.md)
 - Install custom commands to .claude/commands/
 - Configure hooks in .claude/settings.json
 - Set up MCP servers for external integrations
 - Create project-specific CLAUDE.md instructions
-- Browse and recommend marketplace plugins
+
+### Marketplace Search & Discovery
+- Search plugins by keyword using Grep on marketplace.json
+- Find agents/skills by capability using Glob and Grep
+- Browse plugins by category (languages, infrastructure, security, etc.)
+- Explore plugin contents with Read tool
+- Recommend plugins based on project needs
 
 ### Claude Code Configuration
 - Set up .claude/ directory structure
@@ -98,6 +105,25 @@ your-project/
 └── ... (your project)
 ```
 
+### Searching the Marketplace (Tool Use)
+
+**Search by keyword:**
+```
+Grep: pattern="kubernetes|k8s" path="plugins/" glob="**/agents/*.md"
+Grep: pattern="kubernetes" path=".claude-plugin/marketplace.json" -C=5
+```
+
+**Browse a plugin:**
+```
+Glob: plugins/python-development/**/*.md
+Read: plugins/python-development/agents/python-pro.md
+```
+
+**List all skills in a plugin:**
+```
+Glob: plugins/*/skills/*/SKILL.md
+```
+
 ### Installing from Marketplace
 
 **Method 1: Add Agent to CLAUDE.md**
@@ -106,13 +132,26 @@ your-project/
 cat plugins/{plugin}/agents/{agent}.md >> CLAUDE.md
 ```
 
-**Method 2: Install Custom Command**
+**Method 2: Install Skill (3 options)**
+```bash
+# Option A: Full copy for frequent use
+mkdir -p .claude/skills
+cp -r plugins/{plugin}/skills/{skill} .claude/skills/
+
+# Option B: Key sections to CLAUDE.md (recommended)
+# Extract "When to Use", "Core Concepts", "Quick Start" sections
+
+# Option C: Reference only in CLAUDE.md
+# "For X patterns, see: plugins/{plugin}/skills/{skill}/SKILL.md"
+```
+
+**Method 3: Install Custom Command**
 ```bash
 mkdir -p .claude/commands
 cp plugins/{plugin}/commands/{cmd}.md .claude/commands/
 ```
 
-**Method 3: Configure Hooks**
+**Method 4: Configure Hooks**
 ```json
 // .claude/settings.json
 {
@@ -125,7 +164,7 @@ cp plugins/{plugin}/commands/{cmd}.md .claude/commands/
 }
 ```
 
-**Method 4: Add MCP Server**
+**Method 5: Add MCP Server**
 ```json
 // .claude/settings.json
 {
@@ -229,13 +268,21 @@ description: What it does with activation triggers.
 
 ## Example Interactions
 
+### Search & Discovery Requests
+- "Search for agents that help with Kubernetes troubleshooting"
+- "What skills are available for async Python patterns?"
+- "Find plugins related to security scanning"
+- "Show me what's in the llm-application-dev plugin"
+- "List all database-related skills"
+
 ### Installation Requests
 - "Install the python-pro agent for my FastAPI project"
+- "Install the async-python-patterns skill to my CLAUDE.md"
 - "Set up Claude Code for my TypeScript project with linting hooks"
-- "What agents are available for Kubernetes work?"
 - "Add the security-scanning plugin to my project"
 - "Configure MCP for GitHub and Slack integration"
 - "Install auto-formatting hooks for Python files"
+- "Copy the kubernetes skills to my .claude/skills folder"
 
 ### Configuration Requests
 - "Create a CLAUDE.md for my React Native project"
