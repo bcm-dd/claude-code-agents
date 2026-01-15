@@ -1,364 +1,341 @@
 # Agent Manager System
 
-A comprehensive Claude Code plugin for developing agents, skills, commands, hooks, and MCP integrations. This plugin serves as the meta-toolkit for extending Claude Code's capabilities.
-
-## Overview
-
-The Agent Manager System provides everything you need to create production-ready Claude Code extensions:
-
-| Component | Count | Description |
-|-----------|-------|-------------|
-| Agents | 2 | Core agents for development and architecture |
-| Commands | 3 | Workflows for creating agents, skills, and plugins |
-| Skills | 5 | Patterns for agents, skills, hooks, MCP, and CI/CD |
+Install and configure Claude Code agents, skills, hooks, and MCP integrations from the marketplace into your local projects.
 
 ## Quick Start
 
-### Creating a New Agent
+### Install an Agent
 
-Ask Claude Code to create an agent:
-
+Ask Claude Code:
 ```
-Create an agent for Kubernetes troubleshooting that diagnoses pod failures,
-analyzes logs, and suggests fixes.
+Install the python-pro agent for my FastAPI project
 ```
 
-The `agent-manager` agent will:
-1. Design the agent structure with proper capabilities
-2. Select the appropriate model (Haiku vs Sonnet)
-3. Create activation triggers for automatic selection
-4. Generate the complete agent file
+This will:
+1. Find the agent in the marketplace
+2. Add it to your `CLAUDE.md` file
+3. Configure any recommended hooks
 
-### Creating a New Skill
-
-```
-Create a skill for React testing patterns covering unit tests,
-integration tests, and component testing with React Testing Library.
-```
-
-The workflow will create:
-- Progressive disclosure structure (metadata → instructions → resources)
-- Core concepts and quick start guide
-- Fundamental and advanced patterns with code examples
-- Common pitfalls and testing recommendations
-
-### Creating a Complete Plugin
+### Set Up Hooks
 
 ```
-Design a complete plugin for GraphQL development with schema design,
-resolver patterns, and testing capabilities.
+Set up auto-formatting hooks for my TypeScript project
 ```
 
-This orchestrates the full plugin creation:
-- Plugin architecture design
-- Multiple agents for different responsibilities
-- Skills for domain knowledge
-- Commands for workflows
-- Marketplace integration
-
-## Agents
-
-### agent-manager
-
-**Model:** Sonnet (complex reasoning)
-
-The core agent for Claude Code development. Use for:
-
-- Creating new agents with proper structure and conventions
-- Building skills with progressive disclosure architecture
-- Designing commands that orchestrate multi-agent workflows
-- Implementing hooks for automation (PreToolUse, PostToolUse, etc.)
-- Setting up MCP server integrations
-- Creating GitHub Actions workflows
-
-**Example prompts:**
-```
-"Create an agent for database migration that handles schema changes safely"
-"Build a skill for AWS Lambda development patterns"
-"Implement a PreToolUse hook that validates SQL queries before execution"
-"Set up an MCP integration for Linear issue tracking"
+This will create `.claude/settings.json` with:
+```json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Write",
+      "hooks": [{
+        "type": "command",
+        "command": "npx prettier --write \"$FILE_PATH\" && npx eslint --fix \"$FILE_PATH\""
+      }]
+    }]
+  }
+}
 ```
 
-### plugin-architect
+### Configure MCP Integration
 
-**Model:** Sonnet (architectural planning)
-
-Strategic plugin design specialist. Use for:
-
-- Designing plugin structures and component organization
-- Planning agent-skill-command relationships
-- Creating marketplace entries with proper metadata
-- Splitting large plugins into focused smaller ones
-- Designing plugin ecosystems
-
-**Example prompts:**
 ```
-"Design a plugin structure for microservices development"
-"How should I organize a security testing plugin with multiple scanning types?"
-"Review this plugin structure and suggest improvements"
-"Plan a plugin ecosystem for full DevOps automation"
+Set up GitHub and Slack MCP servers for my project
+```
+
+## What Gets Installed Where
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| Agents | `CLAUDE.md` | Project instructions and behaviors |
+| Commands | `.claude/commands/` | Custom slash commands |
+| Hooks | `.claude/settings.json` | Automation on tool use |
+| MCP Servers | `.claude/settings.json` | External integrations |
+
+## Available Marketplace (66 Plugins)
+
+### By Category
+
+**Languages**
+- `python-development` - Python 3.12+, Django, FastAPI, async patterns
+- `javascript-typescript` - ES6+, Node.js, React, TypeScript
+- `systems-programming` - Rust, Go, C, C++
+
+**Infrastructure**
+- `kubernetes-operations` - K8s, Helm, GitOps
+- `cloud-infrastructure` - AWS, Azure, GCP, Terraform
+- `cicd-automation` - GitHub Actions, GitLab CI
+
+**Security**
+- `security-scanning` - SAST, dependency scanning, OWASP
+- `security-compliance` - SOC2, HIPAA, GDPR
+
+**AI/ML**
+- `llm-application-dev` - LangChain, prompt engineering, RAG
+- `machine-learning-ops` - MLOps, model training, deployment
+
+**Workflows**
+- `git-pr-workflows` - PR enhancement, code review
+- `tdd-workflows` - Test-driven development
+
+### Browse All Plugins
+
+```
+What plugins are available for [your use case]?
+```
+
+Or explore the `plugins/` directory.
+
+## Installation Methods
+
+### Method 1: Install Agent to CLAUDE.md
+
+The agent's instructions become part of your project context:
+
+```
+Install the backend-architect agent
+```
+
+Result in `CLAUDE.md`:
+```markdown
+## Backend Architecture
+
+You are an expert backend architect...
+[Full agent instructions]
+```
+
+### Method 2: Install Custom Command
+
+Commands become available as `/command-name`:
+
+```
+Install the /tdd-cycle command from tdd-workflows
+```
+
+Result in `.claude/commands/tdd-cycle.md`
+
+### Method 3: Configure Hooks
+
+Hooks run automatically on tool use:
+
+```
+Add a hook to run tests after any Python file is modified
+```
+
+Result in `.claude/settings.json`:
+```json
+{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Write",
+      "hooks": [{
+        "type": "command",
+        "command": "if [[ \"$FILE_PATH\" == *.py ]]; then pytest; fi"
+      }]
+    }]
+  }
+}
+```
+
+### Method 4: Configure MCP Servers
+
+MCP servers connect Claude Code to external services:
+
+```
+Set up PostgreSQL MCP for database queries
+```
+
+Result in `.claude/settings.json`:
+```json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      }
+    }
+  }
+}
+```
+
+## Common Setup Scenarios
+
+### Python FastAPI Project
+
+```
+Set up Claude Code for my FastAPI project with:
+- Python pro agent
+- Auto-formatting with ruff
+- PostgreSQL MCP for database access
+```
+
+### TypeScript Next.js Project
+
+```
+Configure Claude Code for Next.js with:
+- TypeScript agent
+- ESLint and Prettier hooks
+- GitHub MCP for PR management
+```
+
+### Kubernetes DevOps
+
+```
+Set up for Kubernetes work with:
+- Kubernetes architect agent
+- Terraform skill
+- Security scanning hooks
 ```
 
 ## Commands
 
+### /install-plugin
+
+Install any plugin, agent, skill, or command from the marketplace:
+
+```
+/install-plugin python-development
+/install-plugin kubernetes-architect agent
+/install-plugin tdd-cycle command
+```
+
 ### /create-agent
 
-Systematic workflow for creating new agents.
+Create a custom agent when marketplace doesn't have what you need:
 
-**Phases:**
-1. Requirements gathering and use case analysis
-2. Capability design and model selection
-3. Behavioral trait definition
-4. Knowledge base specification
-5. File generation and validation
-
-**Usage:**
 ```
-/create-agent A Python optimization agent that profiles code and suggests performance improvements
+/create-agent A specialized agent for our internal deployment system
 ```
 
 ### /create-skill
 
-Workflow for creating skills with progressive disclosure.
+Create a custom skill with domain knowledge:
 
-**Phases:**
-1. Skill scope and activation trigger design
-2. Core concept identification
-3. Pattern development (fundamental → advanced)
-4. Resource organization (assets, references)
-5. Testing and pitfall documentation
-
-**Usage:**
 ```
-/create-skill Docker containerization patterns for Python applications
+/create-skill Our company's API design standards
 ```
 
 ### /create-plugin
 
-Comprehensive plugin creation workflow.
+Create a complete plugin with multiple components:
 
-**Phases:**
-1. Plugin architecture design
-2. Agent development (primary + supporting)
-3. Skill development
-4. Command development
-5. Marketplace integration
-6. Validation and testing
-
-**Usage:**
 ```
-/create-plugin A payment processing plugin with Stripe, PayPal, and subscription billing support
+/create-plugin A complete plugin for our microservices architecture
 ```
 
 ## Skills
 
+### claude-code-local-setup
+
+Complete guide to Claude Code configuration:
+- CLAUDE.md structure and best practices
+- .claude/settings.json configuration
+- Hook types and patterns
+- MCP server setup
+- Permission configuration
+
 ### agent-design-patterns
 
-Patterns for creating effective Claude Code agents.
-
-**Topics covered:**
-- Model selection strategy (Haiku vs Sonnet)
-- Activation trigger design
+How to create effective agents:
+- Model selection (Haiku vs Sonnet)
+- Activation triggers
 - Capability organization
-- Behavioral trait definition
-- Knowledge base structuring
-- Multi-agent collaboration patterns
-
-**When activated:** Creating agents, optimizing agent performance, designing agent workflows
-
-### skill-development-patterns
-
-Patterns for building skills with progressive disclosure.
-
-**Topics covered:**
-- Three-tier architecture (metadata, instructions, resources)
-- Activation trigger design
-- Content organization best practices
-- Code example patterns
-- Resource hierarchy (assets, references)
-- Building-block patterns for composable skills
-
-**When activated:** Creating skills, organizing domain knowledge, building educational content
+- Behavioral traits
 
 ### hook-development-patterns
 
-Claude Code hook automation patterns.
-
-**Hook types covered:**
-
-| Hook | Trigger | Use Cases |
-|------|---------|-----------|
-| PreToolUse | Before tool execution | Validation, blocking, modification |
-| PostToolUse | After tool execution | Auto-formatting, testing, notifications |
-| UserPromptSubmit | On user input | Context injection, skill suggestions |
-| Stop | On stop signal | Cleanup, conditional continuation |
-
-**Example hooks:**
-- Auto-format code after Write operations
-- Run tests after file modifications
-- Validate branch names before git operations
-- Inject project context on every prompt
+Automation with hooks:
+- PreToolUse (validation, blocking)
+- PostToolUse (formatting, testing)
+- UserPromptSubmit (context injection)
+- Stop (cleanup, continuation)
 
 ### mcp-server-patterns
 
-MCP (Model Context Protocol) integration patterns.
-
-**Integration categories:**
-- Issue tracking (JIRA, Linear, GitHub Issues)
-- Code platforms (GitHub, GitLab)
-- Databases (PostgreSQL, MongoDB, Redis)
-- Communication (Slack, Discord)
-- Custom servers
-
-**Topics covered:**
-- Server configuration
-- Authentication patterns
-- Tool definition
-- Error handling
-- Multi-server orchestration
+External integrations:
+- GitHub, GitLab
+- JIRA, Linear
+- PostgreSQL, MongoDB
+- Slack, Discord
 
 ### github-actions-workflows
 
-CI/CD automation with Claude Code.
-
-**Workflow patterns:**
-- Automated PR review on pull requests
-- Scheduled documentation sync (monthly)
-- Weekly code quality audits
-- Biweekly dependency updates
-- Security scanning pipelines
-
-**Example workflow:**
-```yaml
-name: Claude Code PR Review
-on:
-  pull_request:
-    types: [opened, synchronize]
-
-jobs:
-  review:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm install -g @anthropic-ai/claude-code
-      - name: Review PR
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: claude-code --print "Review this PR..."
-```
+CI/CD with Claude Code:
+- PR review automation
+- Documentation sync
+- Code quality audits
+- Dependency updates
 
 ## File Structure
 
 ```
 plugins/agent-manager-system/
 ├── agents/
-│   ├── agent-manager.md          # Core development agent
-│   └── plugin-architect.md       # Architecture specialist
+│   ├── agent-manager.md          # Main installation/creation agent
+│   └── plugin-architect.md       # Plugin design specialist
 ├── commands/
-│   ├── create-agent.md           # Agent creation workflow
-│   ├── create-skill.md           # Skill creation workflow
-│   └── create-plugin.md          # Plugin creation workflow
+│   ├── install-plugin.md         # Install from marketplace
+│   ├── create-agent.md           # Create new agent
+│   ├── create-skill.md           # Create new skill
+│   └── create-plugin.md          # Create complete plugin
 └── skills/
-    ├── agent-design-patterns/
-    │   └── SKILL.md
+    ├── claude-code-local-setup/  # Local configuration guide
+    ├── agent-design-patterns/    # Agent creation patterns
     ├── skill-development-patterns/
-    │   └── SKILL.md
     ├── hook-development-patterns/
-    │   └── SKILL.md
     ├── mcp-server-patterns/
-    │   └── SKILL.md
     └── github-actions-workflows/
-        └── SKILL.md
 ```
 
-## Common Workflows
+## Quick Reference
 
-### 1. Create a Domain-Specific Agent
+### Project Setup Checklist
 
-```
-I need an agent for Terraform infrastructure management that can:
-- Generate Terraform configurations
-- Review existing infrastructure code
-- Suggest security improvements
-- Handle state management best practices
-```
+```bash
+# 1. Create Claude Code directory
+mkdir -p .claude/commands
 
-### 2. Build a Knowledge Skill
+# 2. Create project instructions
+touch CLAUDE.md
 
-```
-Create a skill for PostgreSQL optimization covering:
-- Query performance tuning
-- Index design patterns
-- Connection pooling
-- Partitioning strategies
+# 3. Create settings file
+echo '{"hooks": {}, "mcpServers": {}}' > .claude/settings.json
 ```
 
-### 3. Set Up Automation Hooks
+### Common Hooks
 
-```
-Implement hooks that:
-- Run ESLint after every TypeScript file is written
-- Block commits to main branch
-- Add JIRA ticket context to every prompt
+**Auto-format on save:**
+```json
+{"hooks": {"PostToolUse": [{"matcher": "Write", "hooks": [{"type": "command", "command": "npm run format"}]}]}}
 ```
 
-### 4. Configure MCP Integration
-
-```
-Set up MCP integration for our development workflow:
-- GitHub for code and PRs
-- Linear for issue tracking
-- Slack for notifications
+**Run tests on change:**
+```json
+{"hooks": {"PostToolUse": [{"matcher": "Write|Edit", "hooks": [{"type": "command", "command": "npm test"}]}]}}
 ```
 
-### 5. Create CI/CD Pipeline
-
-```
-Design a GitHub Actions workflow that:
-- Reviews PRs with Claude Code
-- Runs weekly security audits
-- Updates documentation monthly
+**Inject context on prompt:**
+```json
+{"hooks": {"UserPromptSubmit": [{"hooks": [{"type": "command", "command": "cat .claude/context.md"}]}]}}
 ```
 
-## Best Practices
+### Common MCP Servers
 
-### Agent Design
-- Use **Sonnet** for complex reasoning, architecture, and review tasks
-- Use **Haiku** for fast execution, code generation, and deterministic tasks
-- Include clear activation triggers in descriptions
-- Define specific capabilities rather than broad claims
+**GitHub:**
+```json
+{"mcpServers": {"github": {"command": "npx", "args": ["-y", "@modelcontextprotocol/server-github"], "env": {"GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"}}}}
+```
 
-### Skill Design
-- Start with "When to Use This Skill" section
-- Provide quick start examples early
-- Progress from fundamental to advanced patterns
-- Include common pitfalls and testing guidance
-
-### Hook Design
-- Keep hooks fast to avoid blocking workflows
-- Use exit codes for pass/fail signaling
-- Log actions for debugging
-- Handle errors gracefully
-
-### Plugin Design
-- Follow single responsibility principle
-- Average 3-4 components per plugin
-- Use clear, discoverable keywords
-- Document cross-plugin dependencies
-
-## Contributing
-
-When adding to this plugin:
-
-1. Follow existing file naming conventions (kebab-case)
-2. Include complete YAML frontmatter
-3. Add activation triggers to descriptions
-4. Update marketplace.json
-5. Test all cross-references
+**PostgreSQL:**
+```json
+{"mcpServers": {"postgres": {"command": "npx", "args": ["-y", "@modelcontextprotocol/server-postgres"], "env": {"DATABASE_URL": "${DATABASE_URL}"}}}}
+```
 
 ## Resources
 
 - [Claude Code Documentation](https://docs.anthropic.com/claude-code)
 - [MCP Specification](https://modelcontextprotocol.io)
-- [Plugin Architecture Guide](../../docs/architecture.md)
-- [Agent Reference](../../docs/agents.md)
+- [Plugin Marketplace](../../plugins/)
+- [Architecture Guide](../../docs/architecture.md)

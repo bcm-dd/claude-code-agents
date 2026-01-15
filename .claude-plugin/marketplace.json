@@ -2052,6 +2052,7 @@
       "category": "ai-ml",
       "strict": false,
       "commands": [
+        "./commands/install-plugin.md",
         "./commands/create-agent.md",
         "./commands/create-skill.md",
         "./commands/create-plugin.md"
@@ -2061,6 +2062,7 @@
         "./agents/plugin-architect.md"
       ],
       "skills": [
+        "./skills/claude-code-local-setup",
         "./skills/agent-design-patterns",
         "./skills/skill-development-patterns",
         "./skills/hook-development-patterns",
