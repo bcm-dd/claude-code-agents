@@ -2025,6 +2025,48 @@
         "./skills/debugging-strategies",
         "./skills/monorepo-management"
       ]
+    },
+    {
+      "name": "agent-manager-system",
+      "source": "./plugins/agent-manager-system",
+      "description": "Claude Code agent development toolkit for creating agents, skills, commands, hooks, and MCP integrations. Includes patterns from claude-code-showcase for comprehensive automation workflows.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Seth Hobson",
+        "url": "https://github.com/wshobson"
+      },
+      "homepage": "https://github.com/wshobson/agents",
+      "repository": "https://github.com/wshobson/agents",
+      "license": "MIT",
+      "keywords": [
+        "agent-development",
+        "claude-code",
+        "skills",
+        "hooks",
+        "mcp",
+        "automation",
+        "github-actions",
+        "prompt-engineering",
+        "plugin-architecture"
+      ],
+      "category": "ai-ml",
+      "strict": false,
+      "commands": [
+        "./commands/create-agent.md",
+        "./commands/create-skill.md",
+        "./commands/create-plugin.md"
+      ],
+      "agents": [
+        "./agents/agent-manager.md",
+        "./agents/plugin-architect.md"
+      ],
+      "skills": [
+        "./skills/agent-design-patterns",
+        "./skills/skill-development-patterns",
+        "./skills/hook-development-patterns",
+        "./skills/mcp-server-patterns",
+        "./skills/github-actions-workflows"
+      ]
     }
   ]
 }
