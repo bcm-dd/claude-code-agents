@@ -2029,7 +2029,7 @@
     {
       "name": "agent-manager-system",
       "source": "./plugins/agent-manager-system",
-      "description": "Claude Code agent development toolkit for creating agents, skills, commands, hooks, and MCP integrations. Includes patterns from claude-code-showcase for comprehensive automation workflows.",
+      "description": "Install and manage Claude Code agents, skills, and commands locally. Search the 66-plugin marketplace, install to CLAUDE.md and .claude/, configure hooks and MCP servers, and proactively create new skills from debugging discoveries. Enables continuous learning where Claude accumulates expertise over sessions.",
       "version": "1.0.0",
       "author": {
         "name": "Seth Hobson",
@@ -2047,7 +2047,9 @@
         "automation",
         "github-actions",
         "prompt-engineering",
-        "plugin-architecture"
+        "plugin-architecture",
+        "continuous-learning",
+        "skill-creation"
       ],
       "category": "ai-ml",
       "strict": false,
