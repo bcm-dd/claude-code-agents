@@ -440,6 +440,89 @@ EOF
 echo "Hooks installed to .claude/settings.json"
 ```
 
+## Phase 5: Install External Skills
+
+### Install from GitHub Repository
+
+For skills not in the marketplace (like continuous-learning-skill):
+
+```bash
+# Clone external skill to user-level skills
+git clone https://github.com/blader/claude-code-continuous-learning-skill.git \
+  ~/.claude/skills/continuous-learning
+
+# Or to project-level
+git clone https://github.com/blader/claude-code-continuous-learning-skill.git \
+  .claude/skills/continuous-learning
+```
+
+### Set Up Continuous Learning System
+
+Install the continuous learning feedback loop:
+
+```bash
+# 1. Clone the skill
+git clone https://github.com/blader/claude-code-continuous-learning-skill.git \
+  ~/.claude/skills/continuous-learning
+
+# 2. Create hooks directory
+mkdir -p ~/.claude/hooks
+
+# 3. Copy activation hook
+cp ~/.claude/skills/continuous-learning/scripts/continuous-learning-activator.sh \
+  ~/.claude/hooks/
+
+# 4. Make executable
+chmod +x ~/.claude/hooks/continuous-learning-activator.sh
+```
+
+Configure in `~/.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/continuous-learning-activator.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+This makes Claude evaluate every session for extractable knowledge.
+
+### Proactive Skill Creation (Without External Dependency)
+
+Add to your `CLAUDE.md` to enable proactive learning:
+
+```markdown
+## Continuous Learning Protocol
+
+After completing debugging or problem-solving work, evaluate:
+1. Did this require non-obvious investigation?
+2. Is the solution reusable for future similar problems?
+3. Did I discover something beyond standard documentation?
+
+If YES to any:
+1. Create a skill file in .claude/skills/ with:
+   - Specific name (kebab-case)
+   - Description optimized for semantic matching
+   - Problem, trigger conditions, solution, verification
+2. Inform the user what was saved
+
+Quality gates - only save if:
+- Reusable across contexts
+- Non-trivial (required discovery)
+- Specific with trigger conditions
+- Actually verified to work
+```
+
 ## Common Installation Scenarios
 
 ### Scenario 1: Python Project Setup

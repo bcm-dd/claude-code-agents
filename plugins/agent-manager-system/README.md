@@ -220,6 +220,73 @@ Result in `.claude/settings.json`:
 }
 ```
 
+## Proactive Skill Creation
+
+The agent-manager doesn't just install skills - it **creates new skills** from your work sessions.
+
+### How It Works
+
+After completing debugging or problem-solving, the agent evaluates:
+1. Did this require non-obvious investigation?
+2. Is the solution reusable for future similar problems?
+3. Did I discover something beyond documentation?
+
+If yes → Creates a skill file automatically.
+
+### Enable Continuous Learning
+
+```
+Set up continuous learning for my project
+```
+
+This adds to your `CLAUDE.md`:
+
+```markdown
+## Continuous Learning Protocol
+
+After completing debugging or problem-solving work, evaluate:
+1. Did this require non-obvious investigation?
+2. Is the solution reusable for future similar problems?
+
+If YES: Create a skill file in .claude/skills/ with problem,
+trigger conditions, solution, and verification steps.
+```
+
+### Manual Skill Extraction
+
+After a debugging session:
+
+```
+Save what we learned about the Prisma connection pooling as a skill
+```
+
+Creates `.claude/skills/prisma-connection-pooling/SKILL.md`:
+
+```markdown
+---
+name: prisma-connection-pooling
+description: Fix Prisma connection exhaustion in serverless. Triggers on "Too many connections" errors with Prisma + Vercel/Lambda.
+---
+
+# Prisma Connection Pooling Fix
+
+## Problem
+Connection pool exhaustion in serverless environments...
+
+## Solution
+1. Configure connection_limit=1
+2. Use Prisma Accelerate or PgBouncer
+...
+```
+
+### Install External Learning Systems
+
+```
+Install the continuous-learning-skill from github.com/blader/claude-code-continuous-learning-skill
+```
+
+This sets up hooks that remind Claude to evaluate every session for extractable knowledge.
+
 ## Common Setup Scenarios
 
 ### Python FastAPI Project
@@ -328,6 +395,14 @@ CI/CD with Claude Code:
 - Code quality audits
 - Dependency updates
 
+### continuous-learning-patterns
+
+Proactive skill creation:
+- Evaluate sessions for extractable knowledge
+- Create skills from debugging discoveries
+- Set up learning hooks and protocols
+- Integrate with external learning systems
+
 ## File Structure
 
 ```
@@ -346,7 +421,8 @@ plugins/agent-manager-system/
     ├── skill-development-patterns/
     ├── hook-development-patterns/
     ├── mcp-server-patterns/
-    └── github-actions-workflows/
+    ├── github-actions-workflows/
+    └── continuous-learning-patterns/  # Proactive skill creation
 ```
 
 ## Quick Reference
